@@ -1,7 +1,7 @@
 import sys
 import os
 import numpy as np
-sys.path.append('../motion')
+sys.path.append('motion')
 from Quaternions import Quaternions
 from Animation import Animation
 import BVH as BVH
@@ -31,7 +31,7 @@ def get_files(directory):
             and f.endswith('.bvh') and f != 'rest.bvh']
 
 def main():
-    bvh_dir = '../database/cmu'
+    bvh_dir = 'database/cmu'
     bvh_files = get_files(bvh_dir)
 
     for i, item in enumerate(bvh_files):

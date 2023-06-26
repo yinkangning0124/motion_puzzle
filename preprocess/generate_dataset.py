@@ -4,8 +4,8 @@ import numpy as np
 import shutil
 import scipy.ndimage.filters as filters
 
-sys.path.append('../motion')
-sys.path.append('../etc')
+sys.path.append('motion')
+sys.path.append('etc')
 from Pivots import Pivots
 from Quaternions import Quaternions
 import Animation as Animation
