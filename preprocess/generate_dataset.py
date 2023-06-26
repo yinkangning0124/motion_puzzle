@@ -71,7 +71,7 @@ def divide_clip(input, window, window_step, divide):
     return windows
 
 def process_data(filename, window=120, window_step=60, divide=True):
-    anim, names, frametime = BVH.load(filename)
+    anim, names, frametime = BVH.load(filename) # The original CMU data is 120 fps
 
     """ Convert to 60 fps """
     anim = anim[::2]
@@ -143,7 +143,7 @@ def process_data(filename, window=120, window_step=60, divide=True):
     feet_l_z = (global_positions[1:, fid_l, 2] - global_positions[:-1, fid_l, 2])**2
     feet_l_h = global_positions[:-1, fid_l, 1]
     feet_l = (((feet_l_x + feet_l_y + feet_l_z) < velfactor)
-              & (feet_l_h < heightfactor)).astype(np.float)
+              & (feet_l_h < heightfactor)).astype(np.float64)
 
     feet_r_x = (global_positions[1:, fid_r, 0] - global_positions[:-1, fid_r, 0])**2
     feet_r_y = (global_positions[1:, fid_r, 1] - global_positions[:-1, fid_r, 1])**2
@@ -213,13 +213,13 @@ def generate_root_mean_std(input, norm_dir):
     np.save(std_path, std.astype(np.float32))
 
 def main():
-    root_path = '../datasets/'
+    root_path = 'datasets'
     dataset_name = 'cmu'
     dataset_dir = os.path.join(root_path, dataset_name)
     os.makedirs(dataset_dir, exist_ok=True)
     print("Create folder ", dataset_dir)
 
-    bvh_dir = '../database/cmu'
+    bvh_dir = 'database/cmu'
     bvh_files = np.array(get_files(bvh_dir), dtype=np.str_)
 
     total_len = len(bvh_files)
@@ -227,7 +227,7 @@ def main():
     test_bvh_files = bvh_files[test_idx]
     test_filename = [x.split('/')[-1] for x in test_bvh_files]
 
-    m_bvh_dir = '../database/cmu_m'
+    m_bvh_dir = 'database/cmu_m'
     m_bvh_files = np.array(get_files(m_bvh_dir), dtype=np.str_)
     bvh_files = np.concatenate([bvh_files, m_bvh_files], axis=0)
     np.random.shuffle(bvh_files)
@@ -239,7 +239,7 @@ def main():
     for i, item in enumerate(bvh_files):
         print('Processing %i of %i (%s)' % (i+1, len(bvh_files), item))
 
-        if item.split('/')[-1] in test_filename:
+        if item.split('/')[-1] in test_filename: # process test data
             local_uclip, root_uclip, ufc = process_data(item, window=120, window_step=60, divide=False)
             test_motions += local_uclip
             test_roots += root_uclip
